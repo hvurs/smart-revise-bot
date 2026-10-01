@@ -46,28 +46,35 @@
     return rows;
   };
 
-  // Buttons
+  // Buttons Panel
   const panel = document.createElement('div');
   panel.id = 'srPanel';
-  panel.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:99999;display:flex;flex-direction:column;gap:8px;align-items:stretch';
-  const style = 'padding:10px 14px;color:#fff;border:0;border-radius:6px;cursor:pointer;font-size:14px';
+  panel.style.cssText = 'position:fixed;bottom:16px;right:16px;z-index:99999;display:flex;flex-direction:column;gap:6px;align-items:stretch;font-family:system-ui,-apple-system,sans-serif';
 
-  // Import CSV button - this is important! Go to the answers.csv file in the repository
-  // You need the CSV if you want to have the answers
-  // The CSV doesn't have all the answers loaded at the minute (as of 01.10.2026)
+  const baseStyle = 'padding:8px 12px;border-radius:6px;cursor:pointer;font-size:13px;font-weight:500;transition:all 0.15s ease;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,0.15)';
+  const mutedStyle = baseStyle + ';background:#212529;color:#ced4da;border:1px solid #343a40';
+
+  // Toggle button (vibrant on/off kept intact)
   const toggle = document.createElement('button');
-  const importBtn = document.createElement('button');
-  importBtn.style.cssText = style + ';background:#5d78ff';
-  const label = () => `Import CSV (${Object.keys(db).length} questions)`;
-  importBtn.textContent = label();
-
-  // Toggle button (on or off)
   const paint = () => {
     toggle.textContent = running ? 'Running - click to stop' : 'Stopped - click to start';
-    toggle.style.cssText = style + ';background:' + (running ? '#34bfa3' : '#fd3995');
+    toggle.style.cssText = baseStyle + ';color:#fff;border:0;background:' + (running ? '#2b8a3e' : '#c92a2a');
   };
   toggle.onclick = () => { running = !running; paint(); console.log(running ? 'Started.' : 'Stopped.'); };
   paint();
+
+  // Helper for hover states on muted buttons
+  const applyMutedStyle = btn => {
+    btn.style.cssText = mutedStyle;
+    btn.onmouseenter = () => { btn.style.background = '#2c3036'; btn.style.color = '#fff'; };
+    btn.onmouseleave = () => { btn.style.background = '#212529'; btn.style.color = '#ced4da'; };
+  };
+
+  // Import CSV button
+  const importBtn = document.createElement('button');
+  const label = () => `Import CSV (${Object.keys(db).length} questions)`;
+  importBtn.textContent = label();
+  applyMutedStyle(importBtn);
 
   importBtn.onclick = () => {
     const inp = document.createElement('input');
@@ -88,7 +95,32 @@
     inp.click();
   };
 
-  panel.append(toggle, importBtn);
+  // Export CSV button
+  const exportBtn = document.createElement('button');
+  exportBtn.textContent = 'Export CSV';
+  applyMutedStyle(exportBtn);
+
+  exportBtn.onclick = () => {
+    const csvRows = ['Question,Answer'];
+    const escapeCSV = str => `"${(str || '').replace(/"/g, '""')}"`;
+
+    for (const [key, answers] of Object.entries(db)) {
+      answers.forEach(ans => {
+        csvRows.push(`${escapeCSV(key)},${escapeCSV(ans)}`);
+      });
+    }
+
+    const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `sr_answers_${new Date().toISOString().slice(0,10)}.csv`;
+    a.click();
+    URL.revokeObjectURL(url);
+    console.log('Exported database to CSV.');
+  };
+
+  panel.append(toggle, importBtn, exportBtn);
   document.body.appendChild(panel);
 
   // Watcher
@@ -109,7 +141,6 @@
       if (handled) { handled = false; seenQ = null; }
       if (q !== seenQ) { seenQ = q; seenAt = Date.now(); auto = false; }
 
-      // Built in cooldown, smart-revise flags you for going too fast. This "bypasses" that
       const known = db[norm(q)];
       if (running && known && !auto && Date.now() - seenAt > 3500) {
         const matches = opts().filter(o => known.some(a => norm(a) === norm(txt(o))));
