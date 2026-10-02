@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Smart Revise Bot</title>
+<meta name="description" content="A browser console script that answers Smart Revise questions for OCR GCSE Computer Science (J277).">
+<style>
+  :root { --bg:#f6f7fb; --fg:#1b1f2a; --muted:#5b6475; --accent:#3a4878; --card:#fff; --line:#dfe3ee; --code:#12151c; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#12151c; --fg:#e8ebf3; --muted:#9aa3b5; --accent:#2f3f70; --card:#1a1e28; --line:#2a2f3d; --code:#0c0e13; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 56px 20px 80px; }
+  h1 { font-size: 2.4rem; line-height:1.15; margin:0 0 12px; letter-spacing:-0.02em; }
+  h2 { font-size: 1.25rem; margin: 40px 0 12px; }
+  p { margin: 0 0 14px; color: var(--muted); }
+  .lead { font-size: 1.15rem; color: var(--fg); }
+  .buttons { display:flex; flex-wrap:wrap; gap:10px; margin: 24px 0 0; }
+  a.btn { display:inline-block; padding:10px 18px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--accent); }
+  a.primary { background:var(--accent); color:#fff; }
+  a.secondary { color:var(--accent); }
+  a.btn:focus-visible { outline:3px solid var(--fg); outline-offset:2px; }
+  ol { padding-left: 22px; margin:0; }
+  li { margin-bottom: 10px; }
+  code { background:var(--code); color:#e8ebf3; padding:2px 7px; border-radius:5px; font-size:.9em; }
+  .note { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
+  .note p { margin:0; }
+  footer { margin-top:48px; font-size:.9rem; color:var(--muted); }
+  footer a { color:var(--accent); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Smart Revise Bot</h1>
+  <p class="lead">A browser console script that fills in Smart Revise answers for OCR GCSE Computer Science (J277) from a CSV of stored answers.</p>
+  <div class="buttons">
+    <a class="btn primary" href="answers.csv" download>Download answers.csv</a>
+    <a class="btn secondary" href="script.js" download>Download script.js</a>
+    <a class="btn secondary" href="https://github.com/hvurs/smart-revise-bot">View on GitHub</a>
+  </div>
+
+  <h2>Setup</h2>
+  <ol>
+    <li>Open your browser console by pressing <code>F12</code>.</li>
+    <li>Paste the contents of <code>script.js</code> into the console and press Enter.</li>
+    <li>Download <code>answers.csv</code>.</li>
+    <li>Click <strong>Import CSV</strong> and choose <code>answers.csv</code>.</li>
+  </ol>
+
+  <h2>Answer coverage</h2>
+  <p>All of Component 2 and most of Component 1, Units 1 and 2 are complete. Coverage grows as the shorter units are added.</p>
+
+  <h2>Use it wisely</h2>
+  <p>Automating the task doesn't count as revision. Use it to check your work or save time on questions you already know, and still go through the material yourself.</p>
+  
+
+  <footer>Made by <a href="https://github.com/hvurs">hvurs</a>. Not affiliated with Smart Revise or OCR.</footer>
+</main>
+</body>
+</html>
