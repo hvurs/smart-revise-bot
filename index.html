@@ -1,62 +1,489 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Smart Revise Bot</title>
-<meta name="description" content="A browser console script that answers Smart Revise questions for OCR GCSE Computer Science (J277).">
-<style>
-  :root { --bg:#f6f7fb; --fg:#1b1f2a; --muted:#5b6475; --accent:#3a4878; --card:#fff; --line:#dfe3ee; --code:#12151c; }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg:#12151c; --fg:#e8ebf3; --muted:#9aa3b5; --accent:#2f3f70; --card:#1a1e28; --line:#2a2f3d; --code:#0c0e13; }
-  }
-  * { box-sizing: border-box; }
-  body { margin:0; background:var(--bg); color:var(--fg); font:17px/1.6 system-ui,-apple-system,"Segoe UI",sans-serif; }
-  main { max-width: 680px; margin: 0 auto; padding: 56px 20px 80px; }
-  h1 { font-size: 2.4rem; line-height:1.15; margin:0 0 12px; letter-spacing:-0.02em; }
-  h2 { font-size: 1.25rem; margin: 40px 0 12px; }
-  p { margin: 0 0 14px; color: var(--muted); }
-  .lead { font-size: 1.15rem; color: var(--fg); }
-  .buttons { display:flex; flex-wrap:wrap; gap:10px; margin: 24px 0 0; }
-  a.btn { display:inline-block; padding:10px 18px; border-radius:8px; text-decoration:none; font-weight:600; border:1px solid var(--accent); }
-  a.primary { background:var(--accent); color:#fff; }
-  a.secondary { color:var(--accent); }
-  a.btn:focus-visible { outline:3px solid var(--fg); outline-offset:2px; }
-  ol { padding-left: 22px; margin:0; }
-  li { margin-bottom: 10px; }
-  code { background:var(--code); color:#e8ebf3; padding:2px 7px; border-radius:5px; font-size:.9em; }
-  .note { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px 18px; }
-  .note p { margin:0; }
-  footer { margin-top:48px; font-size:.9rem; color:var(--muted); }
-  footer a { color:var(--accent); }
-</style>
-</head>
-<body>
-<main>
-  <h1>Smart Revise Bot</h1>
-  <p class="lead">A browser console script that fills in Smart Revise answers for OCR GCSE Computer Science (J277) from a CSV of stored answers.</p>
-  <div class="buttons">
-    <a class="btn primary" href="answers.csv" download>Download answers.csv</a>
-    <a class="btn secondary" href="script.js" download>Download script.js</a>
-    <a class="btn secondary" href="https://github.com/hvurs/smart-revise-bot">View on GitHub</a>
-  </div>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Revise Bot</title>
+    <meta
+      name="description"
+      content="A browser console script that fills in Smart Revise answers for OCR GCSE Computer Science (J277)."
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://i.ibb.co/9P55Z60/image.png"
+    />
+    <meta name="theme-color" content="#0a0a0b" />
+    <script>
+      document.documentElement.classList.add("js");
+    </script>
+    <style>
+      :root {
+        --bg: #0a0a0b;
+        --fg: #e9e9ea;
+        --muted: #8a8a90;
+        --faint: #2a2a2d;
+        --accent: #9db0f0;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          16px/1.6 system-ui,
+          -apple-system,
+          "Segoe UI",
+          sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      main {
+        max-width: 620px;
+        margin: 0 auto;
+        padding: 72px 20px 80px;
+      }
+      h1 {
+        font-size: 2.4rem;
+        line-height: 1.15;
+        margin: 0;
+        letter-spacing: -0.02em;
+      }
+      h2 {
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--muted);
+        margin: 56px 0 14px;
+      }
+      p {
+        margin: 0 0 14px;
+        color: var(--muted);
+      }
+      a {
+        color: var(--accent);
+        text-underline-offset: 3px;
+      }
+      a:hover {
+        color: var(--fg);
+      }
+      a:focus-visible,
+      button:focus-visible {
+        outline: 2px solid var(--accent);
+        outline-offset: 3px;
+      }
+      code {
+        font:
+          0.88em ui-monospace,
+          SFMono-Regular,
+          Menlo,
+          monospace;
+        color: var(--fg);
+      }
 
-  <h2>Setup</h2>
-  <ol>
-    <li>Open your browser console by pressing <code>F12</code>.</li>
-    <li>Paste the contents of <code>script.js</code> into the console and press Enter.</li>
-    <li>Download <code>answers.csv</code>.</li>
-    <li>Click <strong>Import CSV</strong> and choose <code>answers.csv</code>.</li>
-  </ol>
+      ::selection {
+        background: #2c416b;
+        color: #fff;
+      }
+      ::-moz-selection {
+        background: #4f7ad1;
+        color: #fff;
+      }
 
-  <h2>Answer coverage</h2>
-  <p>All of Component 2 and most of Component 1, Units 1 and 2 are complete. Coverage grows as the shorter units are added.</p>
+      html {
+        scrollbar-width: thin;
+        scrollbar-color: #3a3a3f transparent;
+      }
+      html::-webkit-scrollbar {
+        height: 6px;
+        width: 8px;
+      }
+      html::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      html::-webkit-scrollbar-thumb {
+        background: #3a3a3f;
+        border-radius: 999px;
+      }
+      html::-webkit-scrollbar-thumb:hover {
+        background: #55555b;
+      }
 
-  <h2>Use it wisely</h2>
-  <p>Automating the task doesn't count as revision. Use it to check your work or save time on questions you already know, and still go through the material yourself.</p>
-  
+      .lead {
+        font-size: 1.15rem;
+        color: var(--fg);
+        margin: 10px 0 0;
+      }
+      .links {
+        margin-top: 20px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 15px;
+        font: inherit;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--fg);
+        text-decoration: none;
+        background: #141416;
+        border: 0px solid var(--faint);
+        border-radius: 10px;
+        cursor: pointer;
+      }
+      .btn svg {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
 
-  <footer>Made by <a href="https://github.com/hvurs">hvurs</a>. Not affiliated with Smart Revise or OCR.</footer>
-</main>
-</body>
+      .projects {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+      }
+      .projects li {
+        margin: 0 0 20px;
+      }
+      .projects .name {
+        font-weight: 600;
+        color: var(--fg);
+      }
+      .projects p {
+        margin: 2px 0 0;
+        font-size: 0.95rem;
+      }
+
+      .presence {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-top: 64px;
+        padding-top: 28px;
+        border-top: 1px solid var(--faint);
+      }
+      .avatar {
+        position: relative;
+        flex-shrink: 0;
+        width: 48px;
+        height: 48px;
+      }
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        background: var(--faint);
+        display: block;
+      }
+      .dot {
+        position: absolute;
+        right: -1px;
+        bottom: -1px;
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background: #747f8d;
+        border: 3px solid var(--bg);
+      }
+      .dot.online {
+        background: #3ba55d;
+      }
+      .dot.idle {
+        background: #faa61a;
+      }
+      .dot.dnd {
+        background: #ed4245;
+      }
+      .presence-text {
+        min-width: 0;
+      }
+      .presence-name {
+        font-weight: 600;
+        margin: 0;
+        color: var(--fg);
+        line-height: 1.3;
+      }
+      .presence-line {
+        margin: 0;
+        font-size: 0.9rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      footer {
+        margin-top: 28px;
+        font-size: 0.85rem;
+        color: var(--muted);
+      }
+
+      @keyframes rise {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .js .intro > * {
+        animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        animation-delay: calc(var(--i) * 90ms);
+      }
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        transition:
+          opacity 0.6s ease,
+          transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+      }
+      .js .reveal.in {
+        opacity: 1;
+        transform: none;
+      }
+
+      /* ---------- Smoothness ---------- */
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 24px;
+      }
+      body {
+        animation: pageIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+      }
+      @keyframes pageIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      a {
+        transition:
+          color 0.25s ease,
+          text-decoration-color 0.25s ease;
+      }
+      .btn {
+        transition:
+          background 0.25s ease,
+          color 0.25s ease,
+          transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 0.35s ease;
+      }
+      .btn:hover {
+        background: #1c1c1f;
+        color: var(--fg);
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 22px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(157, 176, 240, 0.18);
+      }
+      .btn:active {
+        transform: translateY(0) scale(0.97);
+        transition-duration: 0.1s;
+      }
+      .btn svg {
+        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .btn:hover svg {
+        transform: scale(1.15) rotate(-6deg);
+      }
+      .projects li {
+        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .projects li:hover {
+        transform: translateX(6px);
+      }
+      .js .reveal {
+        filter: blur(6px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+          filter 0.8s ease;
+      }
+      .js .reveal.in {
+        filter: none;
+      }
+      .avatar img {
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .avatar:hover img {
+        transform: scale(1.08) rotate(-3deg);
+      }
+      .dot {
+        transition: background-color 0.4s ease;
+      }
+      .dot.online {
+        animation: pulse 2.4s ease-out infinite;
+      }
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.55);
+        }
+        70%,
+        100% {
+          box-shadow: 0 0 0 8px rgba(59, 165, 93, 0);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        body,
+        .js .intro > * {
+          animation: none;
+        }
+        .js .reveal {
+          opacity: 1;
+          transform: none;
+          filter: none;
+          transition: none;
+        }
+        .dot.online {
+          animation: none;
+        }
+        .btn,
+        .btn svg,
+        .projects li,
+        .avatar img {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div class="intro">
+        <h1 style="--i: 0">Smart Revise Bot</h1>
+        <p class="lead" style="--i: 1">
+          A browser console script that fills in Smart Revise answers for OCR
+          GCSE Computer Science (J277) from a CSV of stored answers.
+        </p>
+        <div class="links" style="--i: 2">
+          <a class="btn" href="answers.csv" download>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z" />
+            </svg>
+            answers.csv
+          </a>
+          <a class="btn" href="script.js" download>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z" />
+            </svg>
+            script.js
+          </a>
+          <a
+            class="btn"
+            href="https://github.com/hvurs/smart-revise-bot"
+            target="_blank"
+            rel="noopener"
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.57.1.78-.25.78-.55 0-.27-.01-1.16-.02-2.1-3.2.7-3.88-1.36-3.88-1.36-.52-1.34-1.28-1.69-1.28-1.69-1.04-.72.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.03 1.75 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.53-2.55-.29-5.24-1.28-5.24-5.7 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.47.11-3.06 0 0 .97-.31 3.18 1.18a11 11 0 0 1 2.9-.39c.98 0 1.97.13 2.9.39 2.2-1.5 3.17-1.18 3.17-1.18.63 1.6.24 2.77.11 3.06.74.8 1.19 1.83 1.19 3.09 0 4.43-2.69 5.4-5.25 5.69.41.36.78 1.06.78 2.14 0 1.55-.01 2.79-.01 3.17 0 .3.2.66.79.55A10.51 10.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5z"
+              />
+            </svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <section class="reveal">
+        <h2>Setup</h2>
+        <ul class="projects">
+          <li>
+            <span class="name">1. Open the console</span>
+            <p>Press <code>F12</code> in your browser.</p>
+          </li>
+          <li>
+            <span class="name">2. Run the script</span>
+            <p>
+              Paste the contents of <code>script.js</code> into the console and
+              press Enter.
+            </p>
+          </li>
+          <li>
+            <span class="name">3. Get the answers</span>
+            <p>Download <code>answers.csv</code> using the button above.</p>
+          </li>
+          <li>
+            <span class="name">4. Import them</span>
+            <p>
+              Click <strong style="color: var(--fg)">Import CSV</strong> and
+              choose <code>answers.csv</code>.
+            </p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="reveal">
+        <h2>Answer coverage</h2>
+        <p>
+          All of Component 2 and most of Component 1, Units 1 and 2 are
+          complete. Coverage grows as the shorter units are added.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Use it wisely</h2>
+        <p>
+          Automating the task doesn't count as revision. Use it to check your
+          work or save time on questions you already know, and still go through
+          the material yourself.
+        </p>
+      </section>
+
+      <div class="presence reveal">
+        <div class="avatar">
+          <img id="avatar" alt="" width="48" height="48" />
+          <span class="dot" id="dot"></span>
+        </div>
+        <div class="presence-text">
+          <p class="presence-name" id="pname">hvurs</p>
+          <p class="presence-line" id="pline">Loading Discord status…</p>
+        </div>
+      </div>
+
+      <footer class="reveal">
+        Made by hvurs. Not affiliated with Smart Revise or OCR.
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        var els = document.querySelectorAll(".reveal");
+        function showAll() {
+          els.forEach(function (el) {
+            el.classList.add("in");
+          });
+        }
+        if (!("IntersectionObserver" in window)) return showAll();
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (e) {
+              if (e.isIntersecting) {
+                e.target.classList.add("in");
+                io.unobserve(e.target);
+              }
+            });
+          },
+          { threshold: 0.1 },
+        );
+        els.forEach(function (el) {
+          io.observe(el);
+        });
+        setTimeout(showAll, 4000);
+      })();
+    </script>
+    <script src="lanyard.js"></script>
+  </body>
 </html>
