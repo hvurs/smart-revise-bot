@@ -23,6 +23,7 @@
         --fg: #e9e9ea;
         --muted: #8a8a90;
         --faint: #2a2a2d;
+        --panel: #141416;
         --accent: #9db0f0;
       }
       * {
@@ -30,6 +31,10 @@
       }
       html {
         color-scheme: dark;
+        scroll-behavior: smooth;
+        scroll-padding-top: 24px;
+        scrollbar-width: thin;
+        scrollbar-color: #3a3a3f transparent;
       }
       body {
         margin: 0;
@@ -41,6 +46,7 @@
           "Segoe UI",
           sans-serif;
         -webkit-font-smoothing: antialiased;
+        animation: pageIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
       }
       main {
         max-width: 620px;
@@ -66,6 +72,9 @@
       a {
         color: var(--accent);
         text-underline-offset: 3px;
+        transition:
+          color 0.25s ease,
+          text-decoration-color 0.25s ease;
       }
       a:hover {
         color: var(--fg);
@@ -83,19 +92,12 @@
           monospace;
         color: var(--fg);
       }
-
+      strong {
+        color: var(--fg);
+      }
       ::selection {
         background: #2c416b;
         color: #fff;
-      }
-      ::-moz-selection {
-        background: #4f7ad1;
-        color: #fff;
-      }
-
-      html {
-        scrollbar-width: thin;
-        scrollbar-color: #3a3a3f transparent;
       }
       html::-webkit-scrollbar {
         height: 6px;
@@ -133,18 +135,55 @@
         font-weight: 600;
         color: var(--fg);
         text-decoration: none;
-        background: #141416;
-        border: 0px solid var(--faint);
+        background: var(--panel);
+        border: 0;
         border-radius: 10px;
         cursor: pointer;
+        transition:
+          background 0.25s ease,
+          transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+          box-shadow 0.35s ease;
       }
       .btn svg {
         width: 16px;
         height: 16px;
         fill: currentColor;
         flex-shrink: 0;
+        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .btn:hover {
+        background: #1c1c1f;
+        color: var(--fg);
+        transform: translateY(-2px);
+        box-shadow:
+          0 8px 22px rgba(0, 0, 0, 0.45),
+          0 0 0 1px rgba(157, 176, 240, 0.18);
+      }
+      .btn:hover svg {
+        transform: scale(1.15) rotate(-6deg);
+      }
+      .btn:active {
+        transform: translateY(0) scale(0.97);
+        transition-duration: 0.1s;
+      }
+      .btn.primary {
+        background: var(--accent);
+        color: #0a0a0b;
+      }
+      .btn.primary:hover {
+        background: #b4c2f5;
+        color: #0a0a0b;
+      }
+      .btn.done {
+        background: #2b8a3e;
+        color: #fff;
+      }
+      .btn.fail {
+        background: #c92a2a;
+        color: #fff;
       }
 
+      /* Steps and lists */
       .projects {
         list-style: none;
         padding: 0;
@@ -160,6 +199,99 @@
       .projects p {
         margin: 2px 0 0;
         font-size: 0.95rem;
+      }
+
+      .copybox {
+        margin-top: 18px;
+        padding: 14px 16px;
+        background: var(--panel);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        flex-wrap: wrap;
+      }
+      .copybox p {
+        margin: 0;
+        font-size: 0.92rem;
+        flex: 1 1 220px;
+      }
+      .note {
+        font-size: 0.88rem;
+        margin-top: 12px;
+      }
+
+      /* Badge guide */
+      .states {
+        list-style: none;
+        padding: 0;
+        margin: 18px 0 0;
+      }
+      .states li {
+        display: flex;
+        gap: 12px;
+        align-items: baseline;
+        margin: 0 0 10px;
+        font-size: 0.95rem;
+        color: var(--muted);
+      }
+      .tag {
+        flex: 0 0 auto;
+        min-width: 112px;
+        padding: 2px 8px;
+        border-radius: 3px;
+        color: #fff;
+        font: 600 12px system-ui, sans-serif;
+      }
+      .tag.green {
+        background: #2b8a3e;
+      }
+      .tag.yellow {
+        background: #e6a700;
+      }
+      .tag.orange {
+        background: #e8590c;
+      }
+      .tag.red {
+        background: #c92a2a;
+      }
+      .tag.blue {
+        background: #1971c2;
+      }
+      .tag.gray {
+        background: #495057;
+      }
+
+      /* Support */
+      .support {
+        display: grid;
+        gap: 10px;
+        margin-top: 4px;
+      }
+      .support a.row {
+        display: block;
+        padding: 14px 16px;
+        background: var(--panel);
+        border-radius: 10px;
+        text-decoration: none;
+        transition:
+          background 0.25s ease,
+          transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .support a.row:hover {
+        background: #1c1c1f;
+        transform: translateX(6px);
+      }
+      .support .name {
+        display: block;
+        font-weight: 600;
+        color: var(--fg);
+      }
+      .support .sub {
+        display: block;
+        font-size: 0.92rem;
+        color: var(--muted);
       }
 
       .presence {
@@ -182,6 +314,10 @@
         border-radius: 50%;
         background: var(--faint);
         display: block;
+        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+      .avatar:hover img {
+        transform: scale(1.08) rotate(-3deg);
       }
       .dot {
         position: absolute;
@@ -192,9 +328,11 @@
         border-radius: 50%;
         background: #747f8d;
         border: 3px solid var(--bg);
+        transition: background-color 0.4s ease;
       }
       .dot.online {
         background: #3ba55d;
+        animation: pulse 2.4s ease-out infinite;
       }
       .dot.idle {
         background: #faa61a;
@@ -218,13 +356,20 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
-
       footer {
         margin-top: 28px;
         font-size: 0.85rem;
         color: var(--muted);
       }
 
+      @keyframes pageIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
       @keyframes rise {
         from {
           opacity: 0;
@@ -235,96 +380,6 @@
           transform: none;
         }
       }
-      .js .intro > * {
-        animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-        animation-delay: calc(var(--i) * 90ms);
-      }
-      .js .reveal {
-        opacity: 0;
-        transform: translateY(16px);
-        transition:
-          opacity 0.6s ease,
-          transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
-      }
-      .js .reveal.in {
-        opacity: 1;
-        transform: none;
-      }
-
-      /* ---------- Smoothness ---------- */
-      html {
-        scroll-behavior: smooth;
-        scroll-padding-top: 24px;
-      }
-      body {
-        animation: pageIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
-      }
-      @keyframes pageIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-      a {
-        transition:
-          color 0.25s ease,
-          text-decoration-color 0.25s ease;
-      }
-      .btn {
-        transition:
-          background 0.25s ease,
-          color 0.25s ease,
-          transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
-          box-shadow 0.35s ease;
-      }
-      .btn:hover {
-        background: #1c1c1f;
-        color: var(--fg);
-        transform: translateY(-2px);
-        box-shadow:
-          0 8px 22px rgba(0, 0, 0, 0.45),
-          0 0 0 1px rgba(157, 176, 240, 0.18);
-      }
-      .btn:active {
-        transform: translateY(0) scale(0.97);
-        transition-duration: 0.1s;
-      }
-      .btn svg {
-        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-      }
-      .btn:hover svg {
-        transform: scale(1.15) rotate(-6deg);
-      }
-      .projects li {
-        transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
-      }
-      .projects li:hover {
-        transform: translateX(6px);
-      }
-      .js .reveal {
-        filter: blur(6px);
-        transition:
-          opacity 0.8s ease,
-          transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
-          filter 0.8s ease;
-      }
-      .js .reveal.in {
-        filter: none;
-      }
-      .avatar img {
-        transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-      }
-      .avatar:hover img {
-        transform: scale(1.08) rotate(-3deg);
-      }
-      .dot {
-        transition: background-color 0.4s ease;
-      }
-      .dot.online {
-        animation: pulse 2.4s ease-out infinite;
-      }
       @keyframes pulse {
         0% {
           box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.55);
@@ -332,6 +387,33 @@
         70%,
         100% {
           box-shadow: 0 0 0 8px rgba(59, 165, 93, 0);
+        }
+      }
+      .js .intro > * {
+        animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        animation-delay: calc(var(--i) * 90ms);
+      }
+      .js .reveal {
+        opacity: 0;
+        transform: translateY(16px);
+        filter: blur(6px);
+        transition:
+          opacity 0.8s ease,
+          transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+          filter 0.8s ease;
+      }
+      .js .reveal.in {
+        opacity: 1;
+        transform: none;
+        filter: none;
+      }
+      @media (max-width: 480px) {
+        h1 {
+          font-size: 2rem;
+        }
+        .states li {
+          flex-direction: column;
+          gap: 4px;
         }
       }
       @media (prefers-reduced-motion: reduce) {
@@ -353,7 +435,7 @@
         }
         .btn,
         .btn svg,
-        .projects li,
+        .support a.row,
         .avatar img {
           transition: none;
         }
@@ -366,9 +448,18 @@
         <h1 style="--i: 0">Smart Revise Bot</h1>
         <p class="lead" style="--i: 1">
           A browser console script that fills in Smart Revise answers for OCR
-          GCSE Computer Science (J277) from a CSV of stored answers.
+          GCSE Computer Science (J277). It loads its answers straight from this
+          project's GitHub and learns any it doesn't know.
         </p>
         <div class="links" style="--i: 2">
+          <button class="btn primary" id="copyBtn" type="button">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M16 1H4a2 2 0 0 0-2 2v14h2V3h12V1zm3 4H8a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h11a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2zm0 16H8V7h11v14z"
+              />
+            </svg>
+            <span id="copyLabel">Copy script</span>
+          </button>
           <a class="btn" href="answers.csv" download>
             <svg viewBox="0 0 24 24" aria-hidden="true">
               <path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z" />
@@ -401,36 +492,138 @@
         <h2>Setup</h2>
         <ul class="projects">
           <li>
-            <span class="name">1. Open the console</span>
-            <p>Press <code>F12</code> in your browser.</p>
+            <span class="name">1. Copy the script</span>
+            <p>Hit <strong>Copy script</strong> at the top of this page.</p>
           </li>
           <li>
-            <span class="name">2. Run the script</span>
+            <span class="name">2. Open the console</span>
             <p>
-              Paste the contents of <code>script.js</code> into the console and
-              press Enter.
+              On the Smart Revise tab, press <code>F12</code> and open the
+              Console tab.
             </p>
           </li>
           <li>
-            <span class="name">3. Get the answers</span>
-            <p>Download <code>answers.csv</code> using the button above.</p>
-          </li>
-          <li>
-            <span class="name">4. Import them</span>
+            <span class="name">3. Paste and press Enter</span>
             <p>
-              Click <strong style="color: var(--fg)">Import CSV</strong> and
-              choose <code>answers.csv</code>.
+              A panel appears at the bottom right of the page and the answers
+              download automatically.
             </p>
           </li>
         </ul>
+        <p class="note">
+          If your browser blocks pasting into the console, type
+          <code>allow pasting</code>, press Enter, then paste again. You'll need
+          to run the script again after refreshing the page.
+        </p>
+      </section>
+
+      <section class="reveal">
+        <h2>How it works</h2>
+        <p>
+          Once a second or so the script checks which question is on screen and
+          looks it up in a list of stored answers. What happens next depends on
+          whether it finds one.
+        </p>
+        <ul class="projects">
+          <li>
+            <span class="name">It knows the question</span>
+            <p>
+              It waits a few seconds so it looks natural, clicks the matching
+              option, then moves on to the next question.
+            </p>
+          </li>
+          <li>
+            <span class="name">Several options match</span>
+            <p>
+              Sometimes more than one stored answer shows up as an option. It
+              picks one at random. If it's wrong, the site reveals the right
+              one and the bot saves it.
+            </p>
+          </li>
+          <li>
+            <span class="name">It doesn't know the question</span>
+            <p>
+              It clicks "I don't know", reads the correct answer the site then
+              shows in green, and saves it for next time.
+            </p>
+          </li>
+          <li>
+            <span class="name">Staying up to date</span>
+            <p>
+              Every time you run it, the script pulls the latest
+              <code>answers.csv</code> from GitHub, so you always have the
+              newest list. Anything it learns is kept in your browser, and you
+              can send new answers back with the
+              <strong>Report new answers</strong> button, which opens a
+              pre-filled GitHub issue for you to submit.
+            </p>
+          </li>
+        </ul>
+
+        <p style="margin-top: 28px">
+          A small tag above each question shows what the bot is doing, so you
+          can tell it hasn't frozen during the delay.
+        </p>
+        <ul class="states">
+          <li>
+            <span class="tag green">Bot: Known</span>
+            <span>It has the answer and will click it shortly.</span>
+          </li>
+          <li>
+            <span class="tag yellow">Bot: Ambiguous</span>
+            <span>More than one option matches, so it will pick one.</span>
+          </li>
+          <li>
+            <span class="tag orange">Bot: Learning</span>
+            <span>New question. It will click "I don't know" to learn it.</span>
+          </li>
+          <li>
+            <span class="tag red">Bot: Stuck</span>
+            <span>
+              It can't act on this one (for example there's no "I don't know"
+              button). Answer it yourself and it will still save the answer.
+            </span>
+          </li>
+          <li>
+            <span class="tag gray">Bot: Paused</span>
+            <span>You stopped it from the panel, so nothing happens.</span>
+          </li>
+        </ul>
+        <p class="note">
+          Once a question is done the tag changes to Answered, Guessed, Learned
+          or Manual, depending on how it was handled.
+        </p>
       </section>
 
       <section class="reveal">
         <h2>Answer coverage</h2>
         <p>
-          All units are covered. From 1.1 all the way to 2.5 (basically, it covers both components). If they add new questions the bot may get stuck on it, however until then, it is fully functional.
-          In the future, I will add it so it purposefully gets questions it doesn't know wrong, that way next time the question appears, the script already knows the answer. I'll also add so the answer list is constantly updating, using the most recent version.
+          All units are covered, from 1.1 all the way to 2.5, so both
+          components. If Smart Revise adds new questions, the bot learns them
+          the first time it sees them and the answer list gets updated from
+          there.
         </p>
+      </section>
+
+      <section class="reveal">
+        <h2>Support</h2>
+        <div class="support">
+          <a
+            class="row"
+            href="https://github.com/hvurs/smart-revise-bot/issues/new"
+            target="_blank"
+            rel="noopener"
+          >
+            <span class="name">Open a GitHub issue</span>
+            <span class="sub">
+              For bugs, wrong answers, or questions the bot gets stuck on.
+            </span>
+          </a>
+          <a class="row" href="mailto:diego@hvurs.cc">
+            <span class="name">diego@hvurs.cc</span>
+            <span class="sub">For anything private.</span>
+          </a>
+        </div>
       </section>
 
       <section class="reveal">
@@ -438,7 +631,9 @@
         <p>
           Automating the task doesn't count as revision. Use it to check your
           work or save time on questions you already know, and still go through
-          the material yourself.
+          the material yourself. Only paste scripts into your console that you
+          trust, and that includes this one: read it first, it's all in the
+          repo.
         </p>
       </section>
 
@@ -482,6 +677,94 @@
           io.observe(el);
         });
         setTimeout(showAll, 4000);
+      })();
+
+      // Copy script
+      (function () {
+        var btn = document.getElementById("copyBtn");
+        var label = document.getElementById("copyLabel");
+        var RAW =
+          "https://raw.githubusercontent.com/hvurs/smart-revise-bot/main/script.js";
+        var code = null;
+
+        // Fetch ahead of time so the copy happens inside the click
+        function load() {
+          return fetch("script.js", { cache: "no-store" })
+            .then(function (r) {
+              if (!r.ok) throw 0;
+              return r.text();
+            })
+            .catch(function () {
+              return fetch(RAW).then(function (r) {
+                if (!r.ok) throw 0;
+                return r.text();
+              });
+            })
+            .then(function (t) {
+              code = t;
+              return t;
+            });
+        }
+        var ready = load().catch(function () {});
+
+        function flash(text, cls) {
+          label.textContent = text;
+          btn.classList.remove("done", "fail");
+          if (cls) btn.classList.add(cls);
+          setTimeout(function () {
+            label.textContent = "Copy script";
+            btn.classList.remove("done", "fail");
+          }, 1800);
+        }
+        function fallbackCopy(text) {
+          var ta = document.createElement("textarea");
+          ta.value = text;
+          ta.style.cssText = "position:fixed;opacity:0";
+          document.body.appendChild(ta);
+          ta.select();
+          var ok = false;
+          try {
+            ok = document.execCommand("copy");
+          } catch (e) {}
+          ta.remove();
+          return ok;
+        }
+        btn.addEventListener("click", function () {
+          if (code === null) {
+            // still loading or failed, try again once
+            label.textContent = "Loading…";
+            return load().then(
+              function (t) {
+                (navigator.clipboard
+                  ? navigator.clipboard.writeText(t)
+                  : Promise.reject()
+                ).then(
+                  function () {
+                    flash("Copied", "done");
+                  },
+                  function () {
+                    flash(fallbackCopy(t) ? "Copied" : "Copy failed", fallbackCopy(t) ? "done" : "fail");
+                  },
+                );
+              },
+              function () {
+                flash("Couldn't load script", "fail");
+              },
+            );
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(code).then(
+              function () {
+                flash("Copied", "done");
+              },
+              function () {
+                if (fallbackCopy(code)) flash("Copied", "done");
+                else flash("Copy failed", "fail");
+              },
+            );
+          } else if (fallbackCopy(code)) flash("Copied", "done");
+          else flash("Copy failed", "fail");
+        });
       })();
     </script>
     <script src="lanyard.js"></script>
