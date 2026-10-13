@@ -26,9 +26,11 @@
         --panel: #141416;
         --accent: #9db0f0;
       }
+
       * {
         box-sizing: border-box;
       }
+
       html {
         color-scheme: dark;
         scroll-behavior: smooth;
@@ -36,6 +38,7 @@
         scrollbar-width: thin;
         scrollbar-color: #3a3a3f transparent;
       }
+
       body {
         margin: 0;
         background: var(--bg);
@@ -48,27 +51,32 @@
         -webkit-font-smoothing: antialiased;
         animation: pageIn 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both;
       }
+
       main {
         max-width: 620px;
         margin: 0 auto;
         padding: 72px 20px 80px;
       }
+
       h1 {
         font-size: 2.4rem;
         line-height: 1.15;
         margin: 0;
         letter-spacing: -0.02em;
       }
+
       h2 {
         font-size: 1rem;
         font-weight: 600;
         color: var(--muted);
         margin: 56px 0 14px;
       }
+
       p {
         margin: 0 0 14px;
         color: var(--muted);
       }
+
       a {
         color: var(--accent);
         text-underline-offset: 3px;
@@ -76,14 +84,17 @@
           color 0.25s ease,
           text-decoration-color 0.25s ease;
       }
+
       a:hover {
         color: var(--fg);
       }
+
       a:focus-visible,
       button:focus-visible {
         outline: 2px solid var(--accent);
         outline-offset: 3px;
       }
+
       code {
         font:
           0.88em ui-monospace,
@@ -92,24 +103,30 @@
           monospace;
         color: var(--fg);
       }
+
       strong {
         color: var(--fg);
       }
+
       ::selection {
         background: #2c416b;
         color: #fff;
       }
+
       html::-webkit-scrollbar {
         height: 6px;
         width: 8px;
       }
+
       html::-webkit-scrollbar-track {
         background: transparent;
       }
+
       html::-webkit-scrollbar-thumb {
         background: #3a3a3f;
         border-radius: 999px;
       }
+
       html::-webkit-scrollbar-thumb:hover {
         background: #55555b;
       }
@@ -119,12 +136,14 @@
         color: var(--fg);
         margin: 10px 0 0;
       }
+
       .links {
         margin-top: 20px;
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
       }
+
       .btn {
         display: inline-flex;
         align-items: center;
@@ -144,6 +163,7 @@
           transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
           box-shadow 0.35s ease;
       }
+
       .btn svg {
         width: 16px;
         height: 16px;
@@ -151,6 +171,7 @@
         flex-shrink: 0;
         transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
       }
+
       .btn:hover {
         background: #1c1c1f;
         color: var(--fg);
@@ -159,25 +180,31 @@
           0 8px 22px rgba(0, 0, 0, 0.45),
           0 0 0 1px rgba(157, 176, 240, 0.18);
       }
+
       .btn:hover svg {
         transform: scale(1.15) rotate(-6deg);
       }
+
       .btn:active {
         transform: translateY(0) scale(0.97);
         transition-duration: 0.1s;
       }
+
       .btn.primary {
         background: var(--accent);
         color: #0a0a0b;
       }
+
       .btn.primary:hover {
         background: #b4c2f5;
         color: #0a0a0b;
       }
+
       .btn.done {
         background: #2b8a3e;
         color: #fff;
       }
+
       .btn.fail {
         background: #c92a2a;
         color: #fff;
@@ -189,16 +216,101 @@
         padding: 0;
         margin: 0;
       }
+
       .projects li {
         margin: 0 0 20px;
       }
+
       .projects .name {
         font-weight: 600;
         color: var(--fg);
       }
+
       .projects p {
         margin: 2px 0 0;
         font-size: 0.95rem;
+      }
+
+      /* Step with a thumbnail on the right */
+      .projects li.has-thumb {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+      }
+
+      .step-text {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .thumb {
+        flex: 0 0 auto;
+        width: 120px;
+        padding: 0;
+        border: 0;
+        background: none;
+        border-radius: 8px;
+        cursor: zoom-in;
+        transition:
+          transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1),
+          opacity 0.2s ease;
+      }
+
+      .thumb img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: 8px;
+        border: 1px solid var(--faint);
+      }
+
+      .thumb:hover {
+        transform: scale(1.05);
+      }
+
+      .thumb.hidden {
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* Lightbox */
+      .lightbox {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        background: rgba(0, 0, 0, 0.82);
+        -webkit-backdrop-filter: blur(4px);
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        visibility: hidden;
+        cursor: zoom-out;
+        transition:
+          opacity 0.4s ease,
+          visibility 0s linear 0.4s;
+      }
+
+      .lightbox.open {
+        opacity: 1;
+        visibility: visible;
+        transition:
+          opacity 0.4s ease,
+          visibility 0s;
+      }
+
+      .lightbox img {
+        display: block;
+        max-width: min(92vw, 1100px);
+        max-height: 88vh;
+        border-radius: 10px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        transform-origin: center center;
+        transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1);
+        will-change: transform;
       }
 
       .copybox {
@@ -212,11 +324,13 @@
         gap: 14px;
         flex-wrap: wrap;
       }
+
       .copybox p {
         margin: 0;
         font-size: 0.92rem;
         flex: 1 1 220px;
       }
+
       .note {
         font-size: 0.88rem;
         margin-top: 12px;
@@ -228,6 +342,7 @@
         padding: 0;
         margin: 18px 0 0;
       }
+
       .states li {
         display: flex;
         gap: 12px;
@@ -236,6 +351,7 @@
         font-size: 0.95rem;
         color: var(--muted);
       }
+
       .tag {
         flex: 0 0 auto;
         min-width: 112px;
@@ -244,21 +360,27 @@
         color: #fff;
         font: 600 12px system-ui, sans-serif;
       }
+
       .tag.green {
         background: #2b8a3e;
       }
+
       .tag.yellow {
         background: #e6a700;
       }
+
       .tag.orange {
         background: #e8590c;
       }
+
       .tag.red {
         background: #c92a2a;
       }
+
       .tag.blue {
         background: #1971c2;
       }
+
       .tag.gray {
         background: #495057;
       }
@@ -269,6 +391,7 @@
         gap: 10px;
         margin-top: 4px;
       }
+
       .support a.row {
         display: block;
         padding: 14px 16px;
@@ -279,15 +402,18 @@
           background 0.25s ease,
           transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
       }
+
       .support a.row:hover {
         background: #1c1c1f;
         transform: translateX(6px);
       }
+
       .support .name {
         display: block;
         font-weight: 600;
         color: var(--fg);
       }
+
       .support .sub {
         display: block;
         font-size: 0.92rem;
@@ -302,12 +428,14 @@
         padding-top: 28px;
         border-top: 1px solid var(--faint);
       }
+
       .avatar {
         position: relative;
         flex-shrink: 0;
         width: 48px;
         height: 48px;
       }
+
       .avatar img {
         width: 100%;
         height: 100%;
@@ -316,9 +444,11 @@
         display: block;
         transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
       }
+
       .avatar:hover img {
         transform: scale(1.08) rotate(-3deg);
       }
+
       .dot {
         position: absolute;
         right: -1px;
@@ -330,25 +460,31 @@
         border: 3px solid var(--bg);
         transition: background-color 0.4s ease;
       }
+
       .dot.online {
         background: #3ba55d;
         animation: pulse 2.4s ease-out infinite;
       }
+
       .dot.idle {
         background: #faa61a;
       }
+
       .dot.dnd {
         background: #ed4245;
       }
+
       .presence-text {
         min-width: 0;
       }
+
       .presence-name {
         font-weight: 600;
         margin: 0;
         color: var(--fg);
         line-height: 1.3;
       }
+
       .presence-line {
         margin: 0;
         font-size: 0.9rem;
@@ -356,6 +492,7 @@
         text-overflow: ellipsis;
         white-space: nowrap;
       }
+
       footer {
         margin-top: 28px;
         font-size: 0.85rem;
@@ -370,6 +507,7 @@
           opacity: 1;
         }
       }
+
       @keyframes rise {
         from {
           opacity: 0;
@@ -380,6 +518,7 @@
           transform: none;
         }
       }
+
       @keyframes pulse {
         0% {
           box-shadow: 0 0 0 0 rgba(59, 165, 93, 0.55);
@@ -389,10 +528,12 @@
           box-shadow: 0 0 0 8px rgba(59, 165, 93, 0);
         }
       }
+
       .js .intro > * {
         animation: rise 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) both;
         animation-delay: calc(var(--i) * 90ms);
       }
+
       .js .reveal {
         opacity: 0;
         transform: translateY(16px);
@@ -402,46 +543,62 @@
           transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
           filter 0.8s ease;
       }
+
       .js .reveal.in {
         opacity: 1;
         transform: none;
         filter: none;
       }
+
       @media (max-width: 480px) {
         h1 {
           font-size: 2rem;
         }
+
         .states li {
           flex-direction: column;
           gap: 4px;
         }
+
+        .thumb {
+          width: 92px;
+        }
       }
+
       @media (prefers-reduced-motion: reduce) {
         html {
           scroll-behavior: auto;
         }
+
         body,
         .js .intro > * {
           animation: none;
         }
+
         .js .reveal {
           opacity: 1;
           transform: none;
           filter: none;
           transition: none;
         }
+
         .dot.online {
           animation: none;
         }
+
         .btn,
         .btn svg,
         .support a.row,
-        .avatar img {
+        .avatar img,
+        .thumb,
+        .lightbox,
+        .lightbox img {
           transition: none;
         }
       }
     </style>
   </head>
+
   <body>
     <main>
       <div class="intro">
@@ -491,6 +648,27 @@
       <section class="reveal">
         <h2>Setup</h2>
         <ul class="projects">
+          <li class="has-thumb">
+            <div class="step-text">
+              <span class="name">Go to "Start Quiz"</span>
+              <p>
+                This currently only solves the Quiz on Smart Revise. You need to
+                go to the quiz
+              </p>
+            </div>
+            <button
+              class="thumb"
+              id="thumb"
+              type="button"
+              aria-label="Enlarge Start Quiz screenshot"
+            >
+              <img
+                id="thumbImg"
+                src="https://img.hvurs.cc/u/h2mmzJ.png"
+                alt="Start Quiz screenshot"
+              />
+            </button>
+          </li>
           <li>
             <span class="name">1. Copy the script</span>
             <p>Hit <strong>Copy script</strong> at the top of this page.</p>
@@ -536,8 +714,8 @@
             <span class="name">Several options match</span>
             <p>
               Sometimes more than one stored answer shows up as an option. It
-              picks one at random. If it's wrong, the site reveals the right
-              one and the bot saves it.
+              picks one at random. If it's wrong, the site reveals the right one
+              and the bot saves it.
             </p>
           </li>
           <li>
@@ -653,15 +831,35 @@
       </footer>
     </main>
 
+    <!-- Image lightbox -->
+    <div
+      class="lightbox"
+      id="lightbox"
+      role="dialog"
+      aria-modal="true"
+      aria-label="Start Quiz screenshot"
+      aria-hidden="true"
+    >
+      <img
+        id="lightboxImg"
+        src="https://img.hvurs.cc/u/h2mmzJ.png"
+        alt="Start Quiz screenshot"
+      />
+    </div>
+
     <script>
+      // Reveal on scroll
       (function () {
         var els = document.querySelectorAll(".reveal");
+
         function showAll() {
           els.forEach(function (el) {
             el.classList.add("in");
           });
         }
+
         if (!("IntersectionObserver" in window)) return showAll();
+
         var io = new IntersectionObserver(
           function (entries) {
             entries.forEach(function (e) {
@@ -673,10 +871,81 @@
           },
           { threshold: 0.1 },
         );
+
         els.forEach(function (el) {
           io.observe(el);
         });
         setTimeout(showAll, 4000);
+      })();
+
+      // Image lightbox (grows from the thumbnail, shrinks back into it)
+      (function () {
+        var thumb = document.getElementById("thumb");
+        var thumbImg = document.getElementById("thumbImg");
+        var box = document.getElementById("lightbox");
+        var big = document.getElementById("lightboxImg");
+        var DURATION = 450;
+        var isOpen = false;
+        var busy = false;
+
+        // Transform that makes the big image sit exactly over the thumbnail
+        function transformFromThumb() {
+          var from = thumbImg.getBoundingClientRect();
+          var to = big.getBoundingClientRect();
+          var dx = from.left + from.width / 2 - (to.left + to.width / 2);
+          var dy = from.top + from.height / 2 - (to.top + to.height / 2);
+          var s = from.width / to.width;
+          return "translate(" + dx + "px, " + dy + "px) scale(" + s + ")";
+        }
+
+        function open() {
+          if (isOpen || busy) return;
+          busy = true;
+          isOpen = true;
+
+          // Start the big image on top of the thumbnail, with no transition
+          big.style.transition = "none";
+          big.style.transform = "none";
+          big.style.transform = transformFromThumb();
+          big.getBoundingClientRect(); // force reflow
+
+          box.classList.add("open");
+          box.setAttribute("aria-hidden", "false");
+          thumb.classList.add("hidden");
+
+          // Then animate to its natural, centered position
+          big.style.transition = "";
+          big.style.transform = "none";
+
+          setTimeout(function () {
+            busy = false;
+          }, DURATION);
+        }
+
+        function close() {
+          if (!isOpen || busy) return;
+          busy = true;
+          isOpen = false;
+
+          // Shrink back into the thumbnail while the backdrop fades out
+          big.style.transform = transformFromThumb();
+          box.classList.remove("open");
+          box.setAttribute("aria-hidden", "true");
+
+          setTimeout(function () {
+            thumb.classList.remove("hidden");
+            big.style.transition = "none";
+            big.style.transform = "none";
+            thumb.focus({ preventScroll: true });
+            busy = false;
+          }, DURATION);
+        }
+
+        thumb.addEventListener("click", open);
+        box.addEventListener("click", close);
+        document.addEventListener("keydown", function (e) {
+          if (e.key === "Escape") close();
+        });
       })();
 
       // Copy script
@@ -705,6 +974,7 @@
               return t;
             });
         }
+
         var ready = load().catch(function () {});
 
         function flash(text, cls) {
@@ -716,6 +986,7 @@
             btn.classList.remove("done", "fail");
           }, 1800);
         }
+
         function fallbackCopy(text) {
           var ta = document.createElement("textarea");
           ta.value = text;
@@ -729,41 +1000,34 @@
           ta.remove();
           return ok;
         }
-        btn.addEventListener("click", function () {
-          if (code === null) {
-            // still loading or failed, try again once
-            label.textContent = "Loading…";
-            return load().then(
-              function (t) {
-                (navigator.clipboard
-                  ? navigator.clipboard.writeText(t)
-                  : Promise.reject()
-                ).then(
-                  function () {
-                    flash("Copied", "done");
-                  },
-                  function () {
-                    flash(fallbackCopy(t) ? "Copied" : "Copy failed", fallbackCopy(t) ? "done" : "fail");
-                  },
-                );
-              },
-              function () {
-                flash("Couldn't load script", "fail");
-              },
-            );
-          }
+
+        function copy(text) {
           if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(code).then(
+            navigator.clipboard.writeText(text).then(
               function () {
                 flash("Copied", "done");
               },
               function () {
-                if (fallbackCopy(code)) flash("Copied", "done");
+                if (fallbackCopy(text)) flash("Copied", "done");
                 else flash("Copy failed", "fail");
               },
             );
-          } else if (fallbackCopy(code)) flash("Copied", "done");
-          else flash("Copy failed", "fail");
+          } else if (fallbackCopy(text)) {
+            flash("Copied", "done");
+          } else {
+            flash("Copy failed", "fail");
+          }
+        }
+
+        btn.addEventListener("click", function () {
+          if (code === null) {
+            // Still loading or failed, try again once
+            label.textContent = "Loading…";
+            return load().then(copy, function () {
+              flash("Couldn't load script", "fail");
+            });
+          }
+          copy(code);
         });
       })();
     </script>
